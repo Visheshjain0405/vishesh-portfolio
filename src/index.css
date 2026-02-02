@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-textMain font-sans antialiased overflow-x-hidden selection:bg-primary/30;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-semibold text-textMain;
+  }
+}
+
+/* Custom Scrollbar - Minimal & Dark */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-surfaceHighlight rounded-full hover:bg-primary/50 transition-colors;
+}
+
+@layer components {
+
+  /* Professional Cards */
+  .glass-panel {
+    @apply bg-surface border border-border rounded-xl transition-all duration-300;
+  }
+
+  .glass-panel:hover {
+    @apply border-primary/30 shadow-lg shadow-primary/5;
+  }
+
+  .btn {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-200 inline-flex items-center justify-center cursor-pointer text-sm tracking-wide gap-2;
+  }
+
+  /* Primary Action Button */
+  .btn-primary {
+    @apply bg-primary text-background hover:bg-white hover:-translate-y-0.5 shadow-md hover:shadow-lg;
+  }
+
+  /* Secondary/Outline Button */
+  .btn-outline {
+    @apply bg-transparent border border-border text-textMuted hover:border-primary hover:text-white;
+  }
+
+  .section {
+    @apply py-24 px-6 max-w-7xl mx-auto;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl mb-12 font-bold text-textMain tracking-tight flex items-center gap-4;
+  }
+
+  /* Inputs */
+  .input-field {
+    @apply w-full p-4 rounded-lg bg-surface border border-border text-textMain focus:outline-none focus:border-primary transition-colors placeholder-textMuted/50 font-sans;
+  }
+}
