@@ -11,16 +11,17 @@ export default {
                 display: ['Inter', 'sans-serif'],
             },
             colors: {
-                background: '#050505', // Deep black/charcoal
-                surface: '#121212',    // Slightly lighter for cards
-                surfaceHighlight: '#1E1E1E',
+                background: '#09090b', // Sleek deep zinc black
+                surface: '#121215',    // Minimalist card surface
+                surfaceHighlight: '#1c1c21',
 
-                primary: '#3b82f6',    // Blue accent (adjust if you want another color)
+                primary: '#FFFFFF',    // Crisp minimalist white
+                primaryHover: '#E4E4E7',
 
-                textMain: '#EDEDED',   // Primary text
-                textMuted: '#A1A1AA',  // Secondary text
+                textMain: '#F4F4F5',   // High readability crisp white
+                textMuted: '#A1A1AA',  // Clean secondary zinc gray
 
-                border: '#27272A',     // Border color
+                border: '#27272A',     // Refined subtle border
             },
             animation: {
                 'fade-in': 'fadeIn 0.5s ease-out forwards',

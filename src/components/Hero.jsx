@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import profile from '../assets/profilepic.jpg';
 
 const Hero = () => {
@@ -11,10 +12,12 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="mb-6 flex items-center gap-3"
+                        className="mb-6 inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-800"
                     >
-                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                        <span className="text-green-500 font-medium text-sm tracking-wide uppercase">Available for new projects</span>
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span className="text-neutral-300 font-medium text-xs tracking-wide uppercase font-mono">
+                            Available for Freelance Projects
+                        </span>
                     </motion.div>
 
                     <motion.h1
@@ -24,16 +27,18 @@ const Hero = () => {
                         className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-8 text-white tracking-tight"
                     >
                         Full Stack Developer <br />
-                        <span className="text-gray-500">specializing in Automation & AI.</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-200 via-neutral-400 to-neutral-500">
+                            & AI Automation Specialist.
+                        </span>
                     </motion.h1>
 
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl leading-relaxed"
+                        className="text-lg md:text-xl text-neutral-400 mb-10 max-w-2xl leading-relaxed"
                     >
-                        I help businesses build scalable web applications and automate complex workflows using React, Node.js, and AI agents. Currently engineering solutions at <span className="text-white font-medium">Blue Data Consulting</span>.
+                        I partner with founders, businesses, and startups worldwide to build scalable web applications, autonomous AI agents, and custom workflow automations. Available for freelance contracts and end-to-end product development.
                     </motion.p>
 
                     <motion.div
@@ -42,11 +47,14 @@ const Hero = () => {
                         transition={{ duration: 0.6, delay: 0.3 }}
                         className="flex flex-wrap gap-4"
                     >
-                        <a href="#projects" className="btn btn-primary">
-                            View Selected Work
-                        </a>
+                        <Link to="/projects" className="btn btn-primary">
+                            View All Projects
+                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </Link>
                         <a href="#contact" className="btn btn-outline">
-                            Get in Touch
+                            Hire Me / Let's Talk
                         </a>
                     </motion.div>
                 </div>
@@ -58,11 +66,11 @@ const Hero = () => {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="relative max-w-sm mx-auto mt-12 md:mt-0"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-2xl blur-2xl transform rotate-6"></div>
+                    <div className="absolute inset-0 bg-white/5 rounded-2xl blur-2xl transform rotate-3"></div>
                     <img
                         src={profile}
                         alt="Vishesh Jain"
-                        className="relative z-10 w-64 h-64 md:w-full md:h-auto object-cover mx-auto rounded-2xl border border-white/10 shadow-2xl grayscale hover:grayscale-0 transition-all duration-500"
+                        className="relative z-10 w-64 h-64 md:w-full md:h-auto object-cover mx-auto rounded-2xl border border-neutral-800 shadow-2xl grayscale hover:grayscale-0 transition-all duration-500"
                     />
                 </motion.div>
             </div>

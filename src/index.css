@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-background text-textMain font-sans antialiased overflow-x-hidden selection:bg-primary/30;
+    @apply bg-background text-textMain font-sans antialiased overflow-x-hidden selection:bg-white/20 selection:text-white;
   }
 
   h1,
@@ -13,13 +13,13 @@
   h4,
   h5,
   h6 {
-    @apply font-display font-semibold text-textMain;
+    @apply font-display font-semibold text-textMain tracking-tight;
   }
 }
 
-/* Custom Scrollbar - Minimal & Dark */
+/* Custom Scrollbar - Sleek Minimalist Zinc */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -27,32 +27,32 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-surfaceHighlight rounded-full hover:bg-primary/50 transition-colors;
+  @apply bg-neutral-800 rounded-full hover:bg-neutral-600 transition-colors;
 }
 
 @layer components {
 
-  /* Professional Cards */
+  /* Minimalist Panels */
   .glass-panel {
     @apply bg-surface border border-border rounded-xl transition-all duration-300;
   }
 
   .glass-panel:hover {
-    @apply border-primary/30 shadow-lg shadow-primary/5;
+    @apply border-neutral-600 shadow-xl shadow-black/40;
   }
 
   .btn {
     @apply px-6 py-3 rounded-lg font-medium transition-all duration-200 inline-flex items-center justify-center cursor-pointer text-sm tracking-wide gap-2;
   }
 
-  /* Primary Action Button */
+  /* Crisp White Primary Action Button (Apple/Linear Style) */
   .btn-primary {
-    @apply bg-primary text-background hover:bg-white hover:-translate-y-0.5 shadow-md hover:shadow-lg;
+    @apply bg-white text-black font-semibold hover:bg-neutral-200 hover:-translate-y-0.5 shadow-md shadow-white/5 active:translate-y-0 transition-all;
   }
 
-  /* Secondary/Outline Button */
+  /* Refined Minimalist Outline Button */
   .btn-outline {
-    @apply bg-transparent border border-border text-textMuted hover:border-primary hover:text-white;
+    @apply bg-transparent border border-neutral-700 text-neutral-300 hover:border-white hover:text-white hover:bg-white/5 active:translate-y-0 transition-all;
   }
 
   .section {
@@ -65,6 +65,6 @@
 
   /* Inputs */
   .input-field {
-    @apply w-full p-4 rounded-lg bg-surface border border-border text-textMain focus:outline-none focus:border-primary transition-colors placeholder-textMuted/50 font-sans;
+    @apply w-full p-4 rounded-lg bg-surface border border-border text-textMain focus:outline-none focus:border-white transition-colors placeholder-neutral-600 font-sans;
   }
 }
