@@ -21,6 +21,17 @@ Check out my live projects and work at: [GitHub Portfolio](https://github.com/vi
 - **Panisho E-Commerce**: Full-scale retail platform with custom analytics.
 - **Rivoogen**: Corporate AI services landing page with premium UI/UX.
 
+## 💼 Services Offered
+- **Websites & Web Apps**: Next.js, React, Three.js, GSAP, and Tailwind CSS.
+- **Mobile Applications**: Cross-platform iOS & Android apps in React Native and Expo.
+- **Autonomous AI Agents**: Multi-agent task execution, Gemini API, Redis & BullMQ queues.
+- **AI Voice Agents**: Real-time voice intelligence, LiveKit WebRTC, sub-second latency.
+- **AI Chatbots & RAG**: Context-aware RAG assistants, WhatsApp Cloud API & Slack bots.
+- **AWS & Cloud Deployment**: Production Docker, AWS S3/EC2, Nginx, CI/CD, and GCP.
+
+## 📜 Certifications
+- **Google Cloud Certified: Associate Cloud Engineer** — Certified in deploying, managing, and securing scalable cloud solutions.
+
 ## 👨‍💻 Experience
 Independent **Full Stack Developer & AI Consultant**, partnering with startups and businesses worldwide to engineer custom web apps and automated workflows.
 

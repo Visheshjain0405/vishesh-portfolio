@@ -3,11 +3,12 @@ import { FiMail, FiSend, FiCheck, FiClock, FiGlobe } from 'react-icons/fi';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
 const projectTypes = [
-    "Full-Stack Web App",
-    "AI Agent / LLM System",
-    "Workflow Automation",
-    "MVP / Prototype",
-    "Technical Consulting"
+    "Web App / Website",
+    "Mobile Application",
+    "Autonomous AI Agent",
+    "AI Voice Agent",
+    "AI Chatbot & RAG",
+    "AWS & Cloud Deployment"
 ];
 
 const Contact = () => {

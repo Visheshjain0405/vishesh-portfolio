@@ -1,71 +1,188 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { SiGooglecloud } from 'react-icons/si';
+import { FiAward, FiCheck } from 'react-icons/fi';
+import { ABOUT_STATEMENT, ABOUT_BODY, CERTIFICATIONS, EXPERIENCE } from '../data/about';
+import Services from './Services';
 
-const About = () => {
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const ACCENT = '#8EA4FF';
+const DISPLAY_FONT = { fontFamily: "'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif" };
+
+/* Masked heading that rises in when it scrolls into view */
+function RevealHeading({ as: Tag = 'h2', className = '', children }) {
     return (
-        <section id="about" className="section">
-            <div className="grid md:grid-cols-12 gap-12">
-                <div className="md:col-span-4">
-                    <h2 className="text-3xl font-bold text-white sticky top-24 tracking-tight">About Me</h2>
+        <Tag className={`reveal-heading overflow-hidden pb-[0.1em] ${className}`} style={DISPLAY_FONT}>
+            <span className="reveal-heading-inner block">{children}</span>
+        </Tag>
+    );
+}
+
+function CertificationCard({ cert }) {
+    return (
+        <div className="cert-card relative overflow-hidden rounded-2xl border border-neutral-800 bg-surface p-6 sm:p-8">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900">
+                    <SiGooglecloud className="h-8 w-8" style={{ color: '#4285F4' }} aria-hidden="true" />
                 </div>
-
-                <div className="md:col-span-8 space-y-12">
-                    <div className="prose prose-invert max-w-none text-neutral-400 text-lg leading-relaxed space-y-4">
-                        <p>
-                            I am <span className="text-white font-medium">Vishesh Jain</span>, an independent Full Stack Developer & AI Consultant. I specialize in building custom, high-velocity web applications, autonomous AI agents, and business automation pipelines.
-                        </p>
-                        <p>
-                            As a freelance engineer, I handle end-to-end delivery—from architectural scoping and database modeling to polished UI/UX and production deployment. My approach is practical: I build tools that solve genuine business bottlenecks, whether that means turning manual spreadsheet workflows into real-time dashboards or engineering AI-powered voice and interview platforms.
-                        </p>
-                    </div>
-
-                    {/* Freelance Services Grid */}
-                    <div className="grid sm:grid-cols-3 gap-6 pt-4">
-                        <div className="p-5 rounded-xl bg-surface border border-neutral-800 hover:border-neutral-600 transition-all">
-                            <div className="w-10 h-10 rounded-lg bg-white/5 text-white border border-neutral-800 flex items-center justify-center font-bold mb-3 text-sm font-mono">
-                                01
-                            </div>
-                            <h4 className="text-white font-medium mb-1">Full-Stack Apps</h4>
-                            <p className="text-neutral-400 text-sm">
-                                Scalable React & Node.js web platforms with seamless real-time features.
-                            </p>
-                        </div>
-                        <div className="p-5 rounded-xl bg-surface border border-neutral-800 hover:border-neutral-600 transition-all">
-                            <div className="w-10 h-10 rounded-lg bg-white/5 text-white border border-neutral-800 flex items-center justify-center font-bold mb-3 text-sm font-mono">
-                                02
-                            </div>
-                            <h4 className="text-white font-medium mb-1">AI & Automation</h4>
-                            <p className="text-neutral-400 text-sm">
-                                Autonomous AI agents, LLM integrations, and WhatsApp/Twilio bot pipelines.
-                            </p>
-                        </div>
-                        <div className="p-5 rounded-xl bg-surface border border-neutral-800 hover:border-neutral-600 transition-all">
-                            <div className="w-10 h-10 rounded-lg bg-white/5 text-white border border-neutral-800 flex items-center justify-center font-bold mb-3 text-sm font-mono">
-                                03
-                            </div>
-                            <h4 className="text-white font-medium mb-1">Direct Delivery</h4>
-                            <p className="text-neutral-400 text-sm">
-                                1-on-1 collaboration, rapid turnaround, clean code, and zero middlemen.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="border-t border-neutral-800 pt-8">
-                        <h3 className="text-white font-bold mb-6 tracking-tight">Work Experience & Track Record</h3>
-                        <div className="grid gap-8">
-                            <div>
-                                <div className="flex justify-between items-baseline mb-2">
-                                    <h4 className="text-xl text-white font-medium">Independent Full Stack & AI Developer</h4>
-                                    <span className="text-sm text-neutral-500 font-mono">2023 — Present</span>
-                                </div>
-                                <div className="text-neutral-300 text-sm mb-2 font-medium">Freelance Software Consultant & Engineer</div>
-                                <p className="text-neutral-400 text-sm max-w-2xl leading-relaxed">
-                                    Partnering with businesses and founders to engineer custom SaaS products, internal automation systems, and client-facing platforms across HRTech, EdTech, E-Commerce, and Logistics.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs text-emerald-400">
+                        <FiAward className="h-3 w-3" aria-hidden="true" />
+                        {cert.issuer}
+                    </span>
+                    <h3
+                        className="mt-3 text-2xl font-semibold tracking-[-0.02em] text-white md:text-3xl"
+                        style={DISPLAY_FONT}
+                    >
+                        {cert.title}
+                    </h3>
+                    <p className="mt-2 max-w-2xl leading-relaxed text-neutral-400">{cert.description}</p>
                 </div>
             </div>
+
+            <ul className="mt-6 flex flex-wrap gap-2 border-t border-neutral-800/80 pt-6" aria-label="Verified skills">
+                {cert.skills.map((skill) => (
+                    <li
+                        key={skill}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-neutral-800 bg-neutral-900 px-3 py-1 text-sm text-neutral-300"
+                    >
+                        <FiCheck className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
+                        {skill}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+const About = () => {
+    const sectionRef = useRef(null);
+
+    useGSAP(
+        () => {
+            const mm = gsap.matchMedia();
+
+            mm.add(
+                {
+                    isDesktop: '(min-width: 768px)',
+                    motionOK: '(prefers-reduced-motion: no-preference)',
+                },
+                (ctx) => {
+                    const { isDesktop, motionOK } = ctx.conditions;
+                    if (!motionOK) return;
+
+                    gsap.utils.toArray('.reveal-heading').forEach((heading) => {
+                        if (!heading.offsetParent) return; // hidden on this screen size
+                        gsap.from(heading.querySelector('.reveal-heading-inner'), {
+                            yPercent: 110,
+                            duration: 1.1,
+                            ease: 'expo.out',
+                            scrollTrigger: { trigger: heading, start: 'top 85%', once: true },
+                        });
+                    });
+
+                    // Intro block only shows on mobile (desktop plays it inside the hero)
+                    if (!isDesktop) {
+                        gsap.fromTo(
+                            '.about-word',
+                            { color: '#404040' },
+                            {
+                                color: '#f5f5f5',
+                                ease: 'none',
+                                stagger: 0.08,
+                                scrollTrigger: { trigger: '.about-statement', start: 'top 80%', end: 'bottom 50%', scrub: true },
+                            }
+                        );
+                        gsap.from('.about-fade', {
+                            autoAlpha: 0,
+                            y: 24,
+                            duration: 0.9,
+                            ease: 'power3.out',
+                            stagger: 0.1,
+                            scrollTrigger: { trigger: '.about-fade', start: 'top 85%', once: true },
+                        });
+                    }
+
+                    gsap.from('.cert-card', {
+                        autoAlpha: 0,
+                        y: 30,
+                        duration: 0.9,
+                        ease: 'power3.out',
+                        scrollTrigger: { trigger: '.cert-card', start: 'top 85%', once: true },
+                    });
+                },
+                sectionRef
+            );
+
+            return () => mm.revert();
+        },
+        { scope: sectionRef }
+    );
+
+    return (
+        <section id="about" ref={sectionRef} className="section">
+            {/* Intro + experience. On desktop this plays inside the hero, so here it only shows
+                on mobile (and for visitors who turned animations off). */}
+            <div className="mb-24 md:hidden md:motion-reduce:block">
+                <RevealHeading className="text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-none tracking-[-0.04em] text-white">
+                    About me
+                </RevealHeading>
+
+                <p
+                    className="about-statement mt-8 text-[clamp(1.5rem,2.6vw,2.2rem)] font-medium leading-[1.25] tracking-[-0.025em] text-neutral-100"
+                    style={DISPLAY_FONT}
+                >
+                    {ABOUT_STATEMENT.split(' ').map((word, i) => (
+                        <React.Fragment key={i}>
+                            <span className="about-word">{word}</span>{' '}
+                        </React.Fragment>
+                    ))}
+                </p>
+                <p className="about-fade mt-6 max-w-2xl text-lg leading-relaxed text-neutral-400">{ABOUT_BODY}</p>
+
+                <div className="about-fade mt-12 border-t border-neutral-800 pt-8">
+                    <div className="flex items-center gap-3 text-sm">
+                        <span className="tabular-nums text-neutral-500">{EXPERIENCE.start}</span>
+                        <span className="h-px w-16" style={{ backgroundColor: ACCENT }} />
+                        <span style={{ color: ACCENT }}>{EXPERIENCE.end}</span>
+                    </div>
+                    <h3 className="mt-4 text-2xl font-medium tracking-[-0.02em] text-white" style={DISPLAY_FONT}>
+                        {EXPERIENCE.title}
+                    </h3>
+                    <p className="mt-1 text-sm font-medium text-neutral-300">{EXPERIENCE.role}</p>
+                    <p className="mt-3 leading-relaxed text-neutral-400">{EXPERIENCE.text}</p>
+                    <ul className="mt-4 flex flex-wrap gap-2" aria-label="Industries">
+                        {EXPERIENCE.industries.map((name) => (
+                            <li key={name} className="rounded-full border border-neutral-800 px-3 py-1 text-sm text-neutral-300">
+                                {name}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
+            {/* Services: 3D ring on large screens, card grid elsewhere */}
+            <Services />
+
+            {/* Certifications */}
+            {CERTIFICATIONS.length > 0 && (
+                <div className="mt-24">
+                    <RevealHeading
+                        as="h3"
+                        className="mb-8 text-[clamp(1.8rem,3vw,2.5rem)] font-semibold leading-none tracking-[-0.03em] text-white"
+                    >
+                        Certifications
+                    </RevealHeading>
+                    <div className="grid gap-4">
+                        {CERTIFICATIONS.map((cert) => (
+                            <CertificationCard key={cert.title} cert={cert} />
+                        ))}
+                    </div>
+                </div>
+            )}
         </section>
     );
 };

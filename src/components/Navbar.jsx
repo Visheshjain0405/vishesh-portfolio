@@ -1,41 +1,97 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { projects } from '../data/projects';
+import { scrollToTop } from '../lib/scroll';
+
+// "#section" links are handled site-wide by <SmoothScroll />:
+// smooth scroll on the home page, or go home first from other pages.
+const SECTION_LINKS = [
+    { id: 'about', label: 'About' },
+    { id: 'services', label: 'Services' },
+];
+const AFTER_PROJECTS = [{ id: 'skills', label: 'Tech Stack' }];
+
+function NavLinkUnderline({ active = false }) {
+    return (
+        <span
+            className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
+                active ? 'w-full' : 'w-0 group-hover:w-full'
+            }`}
+        />
+    );
+}
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const location = useLocation();
-    const isProjectsPage = location.pathname === '/projects';
+    const { pathname } = useLocation();
+    const isProjectsPage = pathname === '/projects';
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const onScroll = () => setScrolled(window.scrollY > 20);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
-    const getHref = (hash) => {
-        return isProjectsPage ? `/${hash}` : hash;
+    // Close the mobile menu whenever the page changes
+    useEffect(() => setIsOpen(false), [pathname]);
+
+    const onLogoClick = (e) => {
+        if (pathname === '/') {
+            e.preventDefault();
+            scrollToTop({ immediate: false });
+        }
     };
 
+    const desktopHashLink = ({ id, label }) => (
+        <li key={id}>
+            <a
+                href={`/#${id}`}
+                className="group relative text-sm font-medium text-neutral-400 transition-colors hover:text-white"
+            >
+                {label}
+                <NavLinkUnderline />
+            </a>
+        </li>
+    );
+
+    const mobileHashLink = ({ id, label }) => (
+        <a
+            key={id}
+            href={`/#${id}`}
+            className="block py-2 text-sm text-neutral-300 hover:text-white"
+            onClick={() => setIsOpen(false)}
+        >
+            {label}
+        </a>
+    );
+
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-            scrolled ? 'bg-[#09090b]/90 backdrop-blur-md border-b border-neutral-800/80 py-4' : 'bg-transparent py-6'
-        }`}>
-            <div className="container mx-auto px-6 max-w-7xl flex justify-between items-center">
-                <Link to="/" className="text-xl font-bold tracking-tight text-white hover:opacity-80 transition-opacity">
+        <nav
+            className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
+                scrolled || isOpen
+                    ? 'border-b border-neutral-800/80 bg-[#09090b]/90 py-4 backdrop-blur-md'
+                    : 'bg-transparent py-6'
+            }`}
+        >
+            <div className="container mx-auto flex max-w-7xl items-center justify-between px-6">
+                <Link
+                    to="/"
+                    onClick={onLogoClick}
+                    className="text-xl font-bold tracking-tight text-white transition-opacity hover:opacity-80"
+                >
                     Vishesh<span className="text-neutral-500">.</span>
                 </Link>
 
-                {/* Mobile Menu Button */}
+                {/* Mobile menu button */}
                 <button
-                    className="md:hidden text-neutral-400 hover:text-white focus:outline-none"
-                    onClick={() => setIsOpen(!isOpen)}
-                    aria-label="Toggle Navigation Menu"
+                    className="text-neutral-400 hover:text-white focus:outline-none md:hidden"
+                    onClick={() => setIsOpen((open) => !open)}
+                    aria-label="Toggle navigation menu"
+                    aria-expanded={isOpen}
                 >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         {isOpen ? (
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
                         ) : (
@@ -44,80 +100,51 @@ const Navbar = () => {
                     </svg>
                 </button>
 
-                {/* Desktop Menu */}
-                <ul className="hidden md:flex gap-8 items-center">
-                    <li>
-                        <a
-                            href={getHref('#about')}
-                            className="relative text-sm font-medium text-neutral-400 hover:text-white transition-colors group"
-                        >
-                            About
-                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                        </a>
-                    </li>
+                {/* Desktop menu */}
+                <ul className="hidden items-center gap-8 md:flex">
+                    {SECTION_LINKS.map(desktopHashLink)}
                     <li>
                         <Link
                             to="/projects"
-                            className={`relative text-sm font-medium transition-colors group flex items-center gap-1.5 ${
-                                isProjectsPage ? 'text-white font-semibold' : 'text-neutral-400 hover:text-white'
+                            className={`group relative flex items-center gap-1.5 text-sm font-medium transition-colors ${
+                                isProjectsPage ? 'font-semibold text-white' : 'text-neutral-400 hover:text-white'
                             }`}
                         >
                             Projects
-                            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-neutral-800 text-neutral-300 border border-neutral-700">
+                            <span className="rounded-full border border-neutral-700 bg-neutral-800 px-1.5 py-0.5 text-[10px] text-neutral-300">
                                 {projects.length}
                             </span>
-                            <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
-                                isProjectsPage ? 'w-full' : 'w-0 group-hover:w-full'
-                            }`}></span>
+                            <NavLinkUnderline active={isProjectsPage} />
                         </Link>
                     </li>
+                    {AFTER_PROJECTS.map(desktopHashLink)}
                     <li>
                         <a
-                            href={getHref('#skills')}
-                            className="relative text-sm font-medium text-neutral-400 hover:text-white transition-colors group"
+                            href="/#contact"
+                            className="ml-4 rounded-md border border-neutral-700 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white hover:text-black"
                         >
-                            Tech Stack
-                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                            Hire Me
                         </a>
                     </li>
-                    <a
-                        href={getHref('#contact')}
-                        className="ml-4 px-4 py-2 text-sm font-medium text-white border border-neutral-700 rounded-md hover:bg-white hover:text-black transition-all"
-                    >
-                        Hire Me
-                    </a>
                 </ul>
 
-                {/* Mobile Menu Dropdown */}
+                {/* Mobile menu */}
                 {isOpen && (
-                    <div className="absolute top-full left-0 right-0 bg-[#09090b] border-b border-neutral-800 p-5 md:hidden flex flex-col gap-4 shadow-2xl">
-                        <a
-                            href={getHref('#about')}
-                            className="text-neutral-300 hover:text-white py-2 block text-sm"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            About
-                        </a>
+                    <div className="absolute left-0 right-0 top-full flex flex-col gap-4 border-b border-neutral-800 bg-[#09090b] p-5 shadow-2xl md:hidden">
+                        {SECTION_LINKS.map(mobileHashLink)}
                         <Link
                             to="/projects"
-                            className="text-neutral-300 hover:text-white py-2 flex items-center justify-between text-sm"
-                            onClick={() => setIsOpen(false)}
+                            className="flex items-center justify-between py-2 text-sm text-neutral-300 hover:text-white"
                         >
                             <span>Projects</span>
-                            <span className="text-xs bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded-full border border-neutral-700">
+                            <span className="rounded-full border border-neutral-700 bg-neutral-800 px-2 py-0.5 text-xs text-neutral-300">
                                 {projects.length} projects
                             </span>
                         </Link>
+                        {AFTER_PROJECTS.map(mobileHashLink)}
                         <a
-                            href={getHref('#skills')}
-                            className="text-neutral-300 hover:text-white py-2 block text-sm"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            Tech Stack
-                        </a>
-                        <a
-                            href={getHref('#contact')}
-                            className="text-center py-2.5 px-4 bg-white text-black font-semibold rounded-md text-sm mt-2"
+                            href="/#contact"
+                            className="mt-2 rounded-md bg-white px-4 py-2.5 text-center text-sm font-semibold text-black"
                             onClick={() => setIsOpen(false)}
                         >
                             Hire Me / Contact
