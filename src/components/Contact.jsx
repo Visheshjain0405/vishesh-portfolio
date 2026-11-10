@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FiMail, FiSend, FiCheck, FiClock, FiGlobe } from 'react-icons/fi';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { trackMetaEvent } from '../lib/metaPixel';
 
 const projectTypes = [
     "Web App / Website",
@@ -23,6 +24,14 @@ const Contact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Track Meta Pixel Lead event for Ad conversion tracking
+        trackMetaEvent('Lead', {
+            content_name: selectedType,
+            currency: 'USD',
+            status: 'Inquiry Submitted'
+        });
+
         const subject = encodeURIComponent(`Freelance Project Inquiry: ${selectedType} - ${formData.name}`);
         const body = encodeURIComponent(
             `Hi Vishesh,\n\nName: ${formData.name}\nEmail: ${formData.email}\nProject Type: ${selectedType}\nBudget/Timeline: ${formData.budget || 'Flexible'}\n\nProject Details:\n${formData.message}\n`
@@ -63,6 +72,7 @@ const Contact = () => {
                             <FiMail className="w-4 h-4 text-neutral-400 flex-shrink-0" />
                             <a
                                 href="mailto:visheshjain0405@gmail.com"
+                                onClick={() => trackMetaEvent('Contact', { channel: 'email' })}
                                 className="text-white hover:underline underline-offset-4"
                             >
                                 visheshjain0405@gmail.com
@@ -80,6 +90,7 @@ const Contact = () => {
                                 href="https://github.com/visheshjain0405"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => trackMetaEvent('Contact', { channel: 'github' })}
                                 className="flex items-center justify-between p-3.5 rounded-xl bg-surface border border-neutral-800 hover:border-neutral-600 text-neutral-400 hover:text-white transition-all group"
                             >
                                 <span className="flex items-center gap-3 text-sm font-medium">
@@ -92,6 +103,7 @@ const Contact = () => {
                                 href="https://www.linkedin.com/in/vishesh-jain0405"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => trackMetaEvent('Contact', { channel: 'linkedin' })}
                                 className="flex items-center justify-between p-3.5 rounded-xl bg-surface border border-neutral-800 hover:border-neutral-600 text-neutral-400 hover:text-white transition-all group"
                             >
                                 <span className="flex items-center gap-3 text-sm font-medium">
